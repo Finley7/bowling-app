@@ -1,20 +1,16 @@
 <?php
 
+use App\Http\Controllers\BoardController;
+use App\Http\Controllers\PlayerController;
+use App\Http\Controllers\PlayerScoreController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [PlayerController::class, 'welcome'])->name('player.welcome');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::post('/create-players', [PlayerController::class, 'save'])->name('player.save');
+Route::post('/submit-score', [PlayerScoreController::class, 'save'])->name('player-score.save');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-require __DIR__.'/auth.php';
+Route::get('/board', [BoardController::class, 'landing'])->name('board.landing');
+Route::get('/game-end', [BoardController::class, 'finish'])->name('board.finish');
+Route::get('/end', [BoardController::class, 'end'])->name('board.end');
